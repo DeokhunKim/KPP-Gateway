@@ -1,0 +1,45 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # Glossary API 서비스
+        - id: glossaryapi
+          uri : http://localhost:8001/
+          predicates:
+            - Path=/api/glossary/**
+            - Method=GET # 단순조회 -> 필터 없음 = 모두 허용 (비회원 가능)
+          filters:
+        - id: glossaryapi
+          uri: http://localhost:8001/
+          predicates:
+            - Path=/api/glossary/**
+            - Method=POST,PUT,PATCH # 추가/수정 -> 토큰 필요 = 회원만 허용
+          filters:
+            - JwtTokenFilter
+
+        ## 토큰발급 서비스
+        - id: auth
+          uri: http://localhost:8099/
+          predicates:
+            - Path=/api/member/**
+
+        # 이전 프로젝트
+        - id: kpp
+          uri : http://localhost:8080/
+          predicates:
+            - Path=/**
+          filters:
+            - MaintainPortFilter
+
