@@ -25,9 +25,28 @@ spring:
           uri: http://localhost:8001/
           predicates:
             - Path=/api/glossary/**
-            - Method=POST,PUT,PATCH # 추가/수정 -> 토큰 필요 = 회원만 허용
+            - Method=POST,PUT,PATCH,DELETE # 추가/수정 -> 토큰 필요 = 회원만 허용
           filters:
             - JwtTokenFilter
+
+
+        # Glossary Web 서비스
+        - id: glossaryweb
+          uri: http://localhost:8002/
+          predicates:
+            - Path=/glossary/**
+          filters:
+            - MaintainPortFilter
+
+        # Messenger 서비스
+        - id: webmessenger
+          uri: http://localhost:8003/
+          predicates:
+            - Path=/chat/**
+          filters:
+            - JwtTokenFilter
+            - MaintainPortFilter
+
 
         ## 토큰발급 서비스
         - id: auth
@@ -39,7 +58,15 @@ spring:
         - id: kpp
           uri : http://localhost:8080/
           predicates:
-            - Path=/**
+            - Path=/, /register, /login, /core/css/**, /core/js/**, /app/icon/**
           filters:
+            - MaintainPortFilter
+
+        - id: kpp
+          uri : http://localhost:8080/
+          predicates:
+            - Path=/app
+          filters:
+            - JwtTokenFilter
             - MaintainPortFilter
 
