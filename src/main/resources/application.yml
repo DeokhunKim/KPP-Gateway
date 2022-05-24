@@ -18,7 +18,7 @@ spring:
       routes:
         # Glossary API 서비스
         - id: glossaryapi
-          uri : 'http://localhost:8001'
+          uri : 'http://glossaryapi:8001'
           predicates:
             - Path=/api/glossary/**
             - Method=GET # 단순조회 -> 필터 없음 = 모두 허용 (비회원 가능)
