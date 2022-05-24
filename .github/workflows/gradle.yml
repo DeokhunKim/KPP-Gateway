@@ -46,12 +46,12 @@ jobs:
     - name: Deploy to AWS EC2
       uses: appleboy/ssh-action@master
       with:
-        host: ec2-15-164-212-128.ap-northeast-2.compute.amazonaws.com
-        username: ec2-user
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_PEM }}
         envs: GITHUB_SHA
         script: |
           docker pull ${{ secrets.DOCKER_ID }}/kpp-gateway:${GITHUB_SHA::7}
           docker tag ${{ secrets.DOCKER_ID }}/kpp-gateway:${GITHUB_SHA::7} kpp-gateway
           docker stop kpp-gateway || true
-          docker run -d --rm --name kpp-gateway --network kpp kpp-gateway
+          docker run -d --rm --name kpp-gateway --network kpp -p 8000:8000 kpp-gateway
