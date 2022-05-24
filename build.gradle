@@ -36,3 +36,13 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	enabled = false
+}
+
+bootJar{
+	archivesBaseName = 'kpp-gateway'
+	archiveFileName = 'kpp-gateway.jar'
+	archiveVersion = "0.0.0"
+}
