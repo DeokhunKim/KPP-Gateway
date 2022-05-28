@@ -58,14 +58,14 @@ spring:
 
         # 이전 프로젝트
         - id: kpp
-          uri : 'http://localhost:8080'
+          uri : 'http://host.docker.internal:8080:8080'
           predicates:
             - Path=/, /register, /login, /core/css/**, /core/js/**, /app/icon/**
           filters:
             - MaintainPortFilter
 
         - id: kpp
-          uri : 'http://localhost:8080'
+          uri : 'http://host.docker.internal:8080:8080'
           predicates:
             - Path=/app
           filters:
